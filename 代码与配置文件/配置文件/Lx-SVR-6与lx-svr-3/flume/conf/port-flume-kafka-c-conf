@@ -1,0 +1,27 @@
+agent.sources = sc1 sc2
+agent.channels = ch1 ch2
+agent.sinks = sk
+
+
+agent.sources.sc1.type = netcat
+agent.sources.sc1.channels = ch1 ch2
+agent.sources.sc1.bind = localhost
+agent.sources.sc1.port = 44444
+
+agent.sources.sc2.type = netcat
+agent.sources.sc2.channels = ch1 ch2
+agent.sources.sc2.bind = localhost
+agent.sources.sc2.port = 44445
+
+agent.channels.ch1.type = org.apache.flume.channel.kafka.KafkaChannel
+agent.channels.ch1.keep-alive = 30
+agent.channels.ch1.kafka.bootstrap.servers = localhost:9092
+agent.channels.ch1.kafka.topic = flume-kafka
+agent.channels.ch1.kafka.consumer.group.id = lxp-consumer
+
+agent.channels.ch2.type = memory
+agent.channels.ch2.capacity = 1000
+agent.channels.ch2.transactionCapacity = 1000
+
+agent.sinks.sk.type = logger
+agent.sinks.sk.channel = ch2

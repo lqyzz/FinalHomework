@@ -1,0 +1,25 @@
+agent.sources = sc1 sc2
+agent.sinks = sk
+agent.channels = chl
+
+agent.sources.sc1.type = netcat
+agent.sources.sc1.channels = chl
+agent.sources.sc1.bind = localhost
+agent.sources.sc1.port = 44444
+
+agent.sources.sc2.type = netcat
+agent.sources.sc2.channels = chl
+agent.sources.sc2.bind = localhost
+agent.sources.sc2.port = 44445
+
+agent.channels.chl.type = memory
+agent.channels.chl.capacity = 1000
+agent.channels.chl.transactionCapacity = 1000
+
+agent.sinks.sk.type = org.apache.flume.sink.kafka.KafkaSink
+agent.sinks.sk.channel = chl
+agent.sinks.sk.kafka.bootstrap.servers=localhost:9092
+agent.sinks.sk.kafka.topic=flume-kafka
+agent.sinks.sk.serializer.class=kafka.serializer.StringEncoder
+agent.sinks.sk.kafka.producer.acks = 1
+agent.sinks.sk.custom.encoding=UTF-8

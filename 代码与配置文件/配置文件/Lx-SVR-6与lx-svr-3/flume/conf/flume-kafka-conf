@@ -1,0 +1,20 @@
+agent.sources = sc
+agent.sinks = sk
+agent.channels = chl
+
+agent.sources.sc.type = exec
+agent.sources.sc.channels = chl
+agent.sources.sc.command =tail -f /home/sae/tmp/test.log
+agent.sources.sc.fileHeader = false
+
+agent.channels.chl.type = memory
+agent.channels.chl.capacity = 1000
+agent.channels.chl.transactionCapacity = 1000
+
+agent.sinks.sk.type = org.apache.flume.sink.kafka.KafkaSink
+agent.sinks.sk.channel = chl
+agent.sinks.sk.kafka.bootstrap.servers=localhost:9092
+agent.sinks.sk.kafka.topic=flume-kafka
+agent.sinks.sk.serializer.class=kafka.serializer.StringEncoder
+agent.sinks.sk.kafka.producer.acks = 1
+agent.sinks.sk.custom.encoding=UTF-8

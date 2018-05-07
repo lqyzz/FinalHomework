@@ -1,0 +1,31 @@
+#agent
+producer.sources = s
+producer.channels = c
+producer.sinks = r
+
+#source
+producer.sources.s.type = spooldir
+producer.sources.s.channels = c
+producer.sources.s.spoolDir = /home/sae/tmp
+producer.sources.s.fileHeader = true
+#producer.sources.s.type = netcat
+#producer.sources.s.bind = localhost
+#producer.sources.s.port = 44444
+#producer.sources.s.channels = c
+
+
+producer.sinks.r.type = org.apache.flume.sink.kafka.KafkaSink
+producer.sinks.r.kafka.bootstrap.servers=localhost:9092
+producer.sinks.r.partitioner.class=org.apache.flume.plugins.SinglePartition
+producer.sinks.r.partition.key=1
+producer.sinks.r.serializer.class=kafka.serializer.StringEncoder
+producer.sinks.r.request.required.acks=0
+producer.sinks.r.max.message.size=1000000
+producer.sinks.r.producer.type=async
+producer.sinks.r.custom.encoding=UTF-8
+producer.sinks.r.custom.topic.name=test
+
+#Specify the channel for the sink
+producer.sinks.r.channel = c
+producer.channels.c.type = memory
+producer.channels.c.capacity = 1000

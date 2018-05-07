@@ -1,0 +1,30 @@
+a1.sources = r1
+a1.sinks = k1
+a1.channels = c1
+
+a1.sources.r1.type = spooldir
+a1.sources.r1.channels = c1
+a1.sources.r1.spoolDir = /home/sae/tmp
+a1.sources.r1.fileHeader = true
+a1.sources.r1.interceptors = i1
+a1.sources.r1.interceptors.i1.type = timestamp
+
+# Use a channel that buffers events in memory
+a1.channels.c1.type = file
+a1.channels.c1.checkpointDir = /home/sae/software/flume/test/checkpoint
+a1.channels.c1.dataDirs = /home/sae/software/flume/test/data1,/home/sae/software/flume/test/data2
+a1.channels.c1.useDualCheckpoints = true
+a1.channels.c1.backupCheckpointDir = /home/sae/software/flume/test/backup/checkpoint
+a1.channels.c1.keep-alive = 30
+
+a1.sinks.k1.type=hbase
+a1.sinks.k1.channel=c1
+a1.sinks.k1.table=stu
+a1.sinks.k1.columnFamily=info
+a1.sinks.k1.serializer=org.apache.flume.sink.hbase.RegexHbaseEventSerializer
+a1.sinks.k1.zookeeperQuorum=localhost:2181
+a1.sinks.k1.znodeParent=/hbase
+
+# Bind the source and sink to the channel
+a1.sources.r1.channels = c1
+

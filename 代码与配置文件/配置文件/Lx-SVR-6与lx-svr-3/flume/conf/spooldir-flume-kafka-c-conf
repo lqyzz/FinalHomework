@@ -1,0 +1,23 @@
+agent.sources = sc1
+agent.channels = ch1 ch2
+agent.sinks = sk
+
+agent.sources.sc1.type = spooldir
+agent.sources.sc1.channels = ch1 ch2
+agent.sources.sc1.spoolDir = /home/sae/tmp
+agent.sources.sc1.fileHeader = true
+agent.sources.sc1.interceptors = i1
+agent.sources.sc1.interceptors.i1.type = timestamp
+
+agent.channels.ch1.type = org.apache.flume.channel.kafka.KafkaChannel
+agent.channels.ch1.keep-alive = 30
+agent.channels.ch1.kafka.bootstrap.servers = localhost:9092
+agent.channels.ch1.kafka.topic = flume-kafka
+agent.channels.ch1.kafka.consumer.group.id = lxp-consumer
+
+agent.channels.ch2.type = memory
+agent.channels.ch2.capacity = 1000
+agent.channels.ch2.transactionCapacity = 1000
+
+agent.sinks.sk.type = logger
+agent.sinks.sk.channel = ch2

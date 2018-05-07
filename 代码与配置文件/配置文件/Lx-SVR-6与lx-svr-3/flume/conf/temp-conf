@@ -1,0 +1,17 @@
+agent.sources = sc1
+agent.channels = ch1
+
+agent.sources.sc1.type = taildir
+agent.sources.sc1.channels = ch1
+agent.sources.sc1.positionFile = /home/lxp/flume-taildir.json
+agent.sources.sc1.fileHeader = true
+agent.sources.sc1.filegroups = f1
+agent.sources.sc1.filegroups.f1 = /home/test/lxp*.*
+agent.sources.sc1.headers.f1.headerKey1 = value1
+
+agent.channels.ch1.type = org.apache.flume.channel.kafka.KafkaChannel
+agent.channels.ch1.keep-alive = 30
+agent.channels.ch1.kafka.bootstrap.servers = lx-srv-1:9092
+agent.channels.ch1.kafka.topic = flume-kafka
+agent.channels.ch1.kafka.consumer.group.id = lxp-consumer
+

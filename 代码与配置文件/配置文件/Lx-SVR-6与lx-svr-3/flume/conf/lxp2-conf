@@ -1,0 +1,33 @@
+agent.sources = sc1
+agent.channels = ch1 ch2
+agent.sinks = sk
+
+agent.sources.sc1.type = taildir
+agent.sources.sc1.channels = ch1 ch2
+agent.sources.sc1.positionFile = /home/lxp/flume-taildir.json
+agent.sources.sc1.fileHeader = true
+agent.sources.sc1.filegroups = f1
+agent.sources.sc1.filegroups.f1 = /home/test/lxp*.*
+agent.sources.sc1.headers.f1.headerKey1 = value1
+
+agent.channels.ch1.type = org.apache.flume.channel.kafka.KafkaChannel
+agent.channels.ch1.keep-alive = 30
+agent.channels.ch1.kafka.bootstrap.servers = lx-svr-1:9092
+agent.channels.ch1.kafka.topic = flume-kafka
+agent.channels.ch1.kafka.consumer.group.id = lxp-consumer
+
+agent.channels.ch2.type = file
+agent.channels.ch2.checkpointDir = /home/lxp/flume/checkpoint
+agent.channels.ch2.dataDirs = /home/lxp/flume/dataDirs/data1,/home/lxp/flume/dataDirs/data2
+agent.channels.ch2.useDualCheckpoints = true
+agent.channels.ch2.backupCheckpointDir = /home/lxp/flume/backup/checkpoint
+agent.channels.ch2.keep-alive = 5
+
+agent.sinks.sk.type=hbase
+agent.sinks.sk.channel=ch2
+agent.sinks.sk.table=lxptest
+agent.sinks.sk.columnFamily=testfile
+agent.sinks.sk.serializer=org.apache.flume.sink.hbase.RegexHbaseEventSerializer
+agent.sinks.sk.zookeeperQuorum=lx-svr-1:2181,Lx-SVR-6:2181,lx-svr-5:2181
+agent.sinks.sk.znodeParent=/hbase
+
